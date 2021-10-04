@@ -40,7 +40,9 @@ module TsvBuddy
     0.upto @data.size - 1 do |j|
       0.upto @title.size - 1 do |k|
         @tsv_string += "\t" if k.positive?
-        @tsv_string += @data[j][@title[k]].to_s
+
+        title = @title[k]
+        @tsv_string += @data[j][title].to_s
       end
       @tsv_string += "\n"
     end
