@@ -10,7 +10,7 @@ module TsvBuddy
 
     @data = []
     1.upto @tsv_data.size - 1 do |i|
-      @data << title.zip(@tsv_data[i].split("\t").map(&:chomp)).to_h
+      @data << title.zip(@tsv_data[i].split("\t")).to_h
     end
 
     @data
@@ -19,32 +19,8 @@ module TsvBuddy
   # to_tsv: converts @data into tsv string
   # returns: String in TSV format
   def to_tsv
-    @tsv_string = ''
-    @title = @data[0].keys
-
-    write_title_to_tsv_string
-    write_content_to_tsv_string
-
-    @tsv_string
-  end
-
-  def write_title_to_tsv_string
-    0.upto @title.size - 1 do |i|
-      @tsv_string += "\t" if i.positive?
-      @tsv_string += @title[i]
-    end
-    @tsv_string += "\n"
-  end
-
-  def write_content_to_tsv_string
-    0.upto @data.size - 1 do |j|
-      0.upto @title.size - 1 do |k|
-        @tsv_string += "\t" if k.positive?
-
-        title = @title[k]
-        @tsv_string += @data[j][title].to_s
-      end
-      @tsv_string += "\n"
-    end
+    headers = @data[0].each_key.map { |key| key }.join("\t")
+    rows = @data.map { |row| "\n#{row.values.join("\t")}" }
+    [headers, rows, "\n"].join
   end
 end
